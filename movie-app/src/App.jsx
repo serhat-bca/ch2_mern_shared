@@ -4,10 +4,18 @@ import Movie from "./components/Movie";
 const App = ({ movies }) => {
   const [movielist, setMovielist] = useState(movies);
   const [movieName, setMovieName] = useState("");
+  const [toggle, setToggle] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Label: ", movieName);
+    const mvObj = {
+      id: Date.now(),
+      title: movieName,
+      watchlist: false,
+    };
+    // setMovielist([...movielist, mvObj]);
+    setMovielist(movielist.concat(mvObj));
     setMovieName("");
   };
 
@@ -28,6 +36,12 @@ const App = ({ movies }) => {
         <input onChange={handleChange} value={movieName} />
         <button type="submit">Add Movie</button>
       </form>
+
+      <h4>Toggle Playground</h4>
+      <button onClick={() => setToggle(!toggle)}>
+        {toggle ? "Show" : "Hide"}
+      </button>
+      <p>{toggle.toString()}</p>
     </div>
   );
 };
