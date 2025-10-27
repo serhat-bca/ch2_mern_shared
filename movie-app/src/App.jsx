@@ -1,5 +1,8 @@
 import { useState } from "react";
 import Movie from "./components/Movie";
+import AddMovieForm from "./components/AddMovieForm";
+import FilteredMovies from "./components/FilteredMovies";
+import Toggle from "./components/Toggle";
 
 const App = ({ movies }) => {
   const [movielist, setMovielist] = useState(movies);
@@ -30,20 +33,13 @@ const App = ({ movies }) => {
   return (
     <div>
       <h2>Movies</h2>
-      <button onClick={() => setToggle(!toggle)}>
-        {toggle ? "Show All Movies" : "Show Watchlist Only"}
-      </button>
-      <h4>{toggle ? "The Movies in the Watchlist" : "The Movie List"}</h4>
-      <ul>
-        {filteredMovies.map((m) => (
-          <Movie key={m.id} movie={m} />
-        ))}
-      </ul>
-      <h3>Add a new movie</h3>
-      <form onSubmit={handleSubmit}>
-        <input onChange={handleChange} value={movieName} />
-        <button type="submit">Add Movie</button>
-      </form>
+      <Toggle toggle={toggle} setToggle={setToggle} />
+      <FilteredMovies filteredMovies={filteredMovies} />
+      <AddMovieForm
+        movieName={movieName}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+      />
     </div>
   );
 };
