@@ -6,6 +6,10 @@ const App = ({ movies }) => {
   const [movieName, setMovieName] = useState("");
   const [toggle, setToggle] = useState(false);
 
+  const filteredMovies = toggle
+    ? movielist.filter((m) => m.watchlist)
+    : movielist;
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Label: ", movieName);
@@ -26,8 +30,12 @@ const App = ({ movies }) => {
   return (
     <div>
       <h2>Movies</h2>
+      <button onClick={() => setToggle(!toggle)}>
+        {toggle ? "Show All Movies" : "Show Watchlist Only"}
+      </button>
+      <h4>{toggle ? "The Movies in the Watchlist" : "The Movie List"}</h4>
       <ul>
-        {movielist.map((m) => (
+        {filteredMovies.map((m) => (
           <Movie key={m.id} movie={m} />
         ))}
       </ul>
@@ -36,12 +44,6 @@ const App = ({ movies }) => {
         <input onChange={handleChange} value={movieName} />
         <button type="submit">Add Movie</button>
       </form>
-
-      <h4>Toggle Playground</h4>
-      <button onClick={() => setToggle(!toggle)}>
-        {toggle ? "Show" : "Hide"}
-      </button>
-      <p>{toggle.toString()}</p>
     </div>
   );
 };
