@@ -1,11 +1,11 @@
 import Movie from "./Movie";
 
-const FilteredMovies = ({ filteredMovies }) => {
+const FilteredMovies = ({ filteredMovies, toggleWatchlist }) => {
   return (
     <div>
       <ul>
         {filteredMovies.map((m) => (
-          <Movie key={m.id} movie={m} />
+          <Movie key={m.id} movie={m} toggleWatchlist={toggleWatchlist} />
         ))}
       </ul>
     </div>

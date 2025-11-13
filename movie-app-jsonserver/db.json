@@ -8,7 +8,7 @@
     {
       "id": "2",
       "title": "The Matrix",
-      "watchlist": false
+      "watchlist": true
     },
     {
       "id": "3",
@@ -21,29 +21,22 @@
       "watchlist": false
     },
     {
-      "id": "5",
-      "title": "The Godfather",
-      "watchlist": true
-    },
-    {
-      "id": "6",
-      "title": "Pulp Fiction",
-      "watchlist": false
-    },
-    {
-      "id": "7",
-      "title": "Avengers: Endgame",
-      "watchlist": true
-    },
-    {
-      "id": "370b",
-      "title": "Spiderman",
-      "watchlist": false
-    },
-    {
-      "id": "6716",
+      "id": "ca1b",
       "title": "Shrek",
-      "watchlist": false
+      "watchlist": false,
+      "releaseYear": 2003
+    },
+    {
+      "id": "72b5",
+      "title": "Spiderman",
+      "watchlist": false,
+      "releaseYear": null
+    },
+    {
+      "id": "c4fe",
+      "title": "Braveheart",
+      "watchlist": false,
+      "releaseYear": 1999
     }
   ]
 }
