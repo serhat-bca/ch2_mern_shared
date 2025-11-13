@@ -1,13 +1,20 @@
-import { useState } from "react";
-import Movie from "./components/Movie";
+import { useState, useEffect } from "react";
 import AddMovieForm from "./components/AddMovieForm";
 import FilteredMovies from "./components/FilteredMovies";
 import Toggle from "./components/Toggle";
+import axios from "axios";
 
-const App = ({ movies }) => {
-  const [movielist, setMovielist] = useState(movies);
+const App = () => {
+  const [movielist, setMovielist] = useState([]);
   const [movieName, setMovieName] = useState("");
   const [toggle, setToggle] = useState(false);
+
+  useEffect(() => {
+    axios.get("http://localhost:3001/movies").then((response) => {
+      console.log(response.data);
+      setMovielist(response.data);
+    });
+  }, []);
 
   const filteredMovies = toggle
     ? movielist.filter((m) => m.watchlist)
@@ -17,13 +24,18 @@ const App = ({ movies }) => {
     e.preventDefault();
     console.log("Label: ", movieName);
     const mvObj = {
-      id: Date.now(),
+      // id: Date.now(),
       title: movieName,
       watchlist: false,
     };
+    // make a post request to json-server
+    axios.post("http://localhost:3001/movies", mvObj).then((response) => {
+      // response.data will have the newly created object
+      console.log(response.data);
+      setMovielist([...movielist, response.data]);
+      setMovieName("");
+    });
     // setMovielist([...movielist, mvObj]);
-    setMovielist(movielist.concat(mvObj));
-    setMovieName("");
   };
 
   const handleChange = (e) => {
