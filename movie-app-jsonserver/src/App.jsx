@@ -7,6 +7,7 @@ import axios from "axios";
 const App = () => {
   const [movielist, setMovielist] = useState([]);
   const [movieName, setMovieName] = useState("");
+  const [releaseYear, setReleaseYear] = useState("");
   const [toggle, setToggle] = useState(false);
 
   useEffect(() => {
@@ -34,6 +35,7 @@ const App = () => {
       console.log(response.data);
       setMovielist([...movielist, response.data]);
       setMovieName("");
+      setReleaseYear("");
     });
     // setMovielist([...movielist, mvObj]);
   };
@@ -51,6 +53,8 @@ const App = () => {
         movieName={movieName}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
+        releaseYear={releaseYear}
+        setReleaseYear={setReleaseYear}
       />
     </div>
   );
