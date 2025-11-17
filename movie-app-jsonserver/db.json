@@ -3,17 +3,17 @@
     {
       "id": "1",
       "title": "Inception",
-      "watchlist": true
+      "watchlist": false
     },
     {
       "id": "2",
       "title": "The Matrix",
-      "watchlist": true
+      "watchlist": false
     },
     {
       "id": "3",
       "title": "Interstellar",
-      "watchlist": true
+      "watchlist": false
     },
     {
       "id": "4",
@@ -37,6 +37,12 @@
       "title": "Braveheart",
       "watchlist": false,
       "releaseYear": 1999
+    },
+    {
+      "id": "50d4",
+      "title": "Movie New",
+      "watchlist": false,
+      "releaseYear": 2000
     }
   ]
 }

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import AddMovieForm from "./components/AddMovieForm";
 import FilteredMovies from "./components/FilteredMovies";
 import Toggle from "./components/Toggle";
-import axios from "axios";
+import movieService from "./services/movieService";
 
 const App = () => {
   const [movielist, setMovielist] = useState([]);
@@ -11,17 +11,18 @@ const App = () => {
   const [toggle, setToggle] = useState(false);
 
   useEffect(() => {
-    axios.get("http://localhost:3001/movies").then((response) => {
-      console.log(response.data);
-      setMovielist(response.data);
-    });
+    // axios.get("http://localhost:3001/movies").then((response) => {
+    //   console.log(response.data);
+    //   setMovielist(response.data);
+    // });
+    movieService.getAllMovies().then((movies) => setMovielist(movies));
   }, []);
 
   const filteredMovies = toggle
     ? movielist.filter((m) => m.watchlist)
     : movielist;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (movieName) {
       console.log("Label: ", movieName);
@@ -32,13 +33,17 @@ const App = () => {
         releaseYear: parseInt(releaseYear) || null,
       };
       // make a post request to json-server
-      axios.post("http://localhost:3001/movies", mvObj).then((response) => {
-        // response.data will have the newly created object
-        console.log(response.data);
-        setMovielist([...movielist, response.data]);
-        setMovieName("");
-        setReleaseYear("");
-      });
+      const newMovie = await movieService.addMovie(mvObj);
+      setMovielist([...movielist, newMovie]);
+      setMovieName("");
+      setReleaseYear("");
+      // axios.post("http://localhost:3001/movies", mvObj).then((response) => {
+      //   // response.data will have the newly created object
+      //   console.log(response.data);
+      //   setMovielist([...movielist, response.data]);
+      //   setMovieName("");
+      //   setReleaseYear("");
+      // });
     } else {
       alert("Please enter a movie name");
       setReleaseYear("");
@@ -53,12 +58,13 @@ const App = () => {
 
   const toggleWatchlist = async (movie) => {
     const request = { ...movie, watchlist: !movie.watchlist };
-    const response = await axios.put(
-      `http://localhost:3001/movies/${movie.id}`,
-      request
-    );
+    // const response = await axios.put(
+    //   `http://localhost:3001/movies/${movie.id}`,
+    //   request
+    // );
 
-    const updatedMovie = response.data;
+    // const updatedMovie = response.data;
+    const updatedMovie = await movieService.updateMovie(request);
 
     // update the movieList state with the updated movie
     setMovielist(
