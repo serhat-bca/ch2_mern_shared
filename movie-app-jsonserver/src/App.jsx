@@ -9,13 +9,20 @@ const App = () => {
   const [movieName, setMovieName] = useState("");
   const [releaseYear, setReleaseYear] = useState("");
   const [toggle, setToggle] = useState(false);
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     // axios.get("http://localhost:3001/movies").then((response) => {
     //   console.log(response.data);
     //   setMovielist(response.data);
     // });
-    movieService.getAllMovies().then((movies) => setMovielist(movies));
+    movieService
+      .getAllMovies()
+      .then((movies) => setMovielist(movies))
+      .catch((e) => {
+        console.log("Server is down");
+        setMovielist(null);
+      });
   }, []);
 
   const filteredMovies = toggle
@@ -34,6 +41,10 @@ const App = () => {
       };
       // make a post request to json-server
       const newMovie = await movieService.addMovie(mvObj);
+      setNotification(`A new movie added [${newMovie.title}]`);
+      setTimeout(() => {
+        setNotification(null);
+      }, 3000);
       setMovielist([...movielist, newMovie]);
       setMovieName("");
       setReleaseYear("");
@@ -45,10 +56,13 @@ const App = () => {
       //   setReleaseYear("");
       // });
     } else {
-      alert("Please enter a movie name");
+      // alert("Please enter a movie name");
+      setNotification("Movie name is required!");
+      setTimeout(() => {
+        setNotification(null);
+      }, 3000);
       setReleaseYear("");
     }
-
     // setMovielist([...movielist, mvObj]);
   };
 
@@ -64,17 +78,27 @@ const App = () => {
     // );
 
     // const updatedMovie = response.data;
-    const updatedMovie = await movieService.updateMovie(request);
+    try {
+      const updatedMovie = await movieService.updateMovie(request);
 
-    // update the movieList state with the updated movie
-    setMovielist(
-      movielist.map((m) => (m.id === updatedMovie.id ? updatedMovie : m))
-    );
+      // update the movieList state with the updated movie
+      setMovielist(
+        movielist.map((m) => (m.id === updatedMovie.id ? updatedMovie : m))
+      );
+    } catch (error) {
+      alert(`The movie [${movie.title}] is not in server.`);
+      setMovielist(movielist.filter((m) => m.id !== movie.id));
+    }
   };
+
+  if (movielist == null) {
+    return <p>Sorry. Server is down. Try Later</p>;
+  }
 
   return (
     <div>
       <h2>Movies</h2>
+      {notification && <p>{notification}</p>}
       <Toggle toggle={toggle} setToggle={setToggle} />
       <FilteredMovies
         filteredMovies={filteredMovies}
